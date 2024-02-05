@@ -1,4 +1,8 @@
 import matplotlib.pyplot as plt
+from matplotlib import cm
+import numpy as np
+import pandas as pd
+from CoolProp.CoolProp import PropsSI
 
 class Room:
     def __init__(self, room_dimensions, floor_material, wall_material, ceiling_material, floor_thickness, wall_thickness, ceiling_thickness, desired_temp):
@@ -65,19 +69,3 @@ class Plotter:
         # Set title and display the plot
         plt.title('Monthly cooling demand and average monthly temperatures in Hamburg')
         plt.show()
-
-if __name__ == "__main__":
-    average_temperature_hamburg = [1.7, 2, 4.5, 9.1, 13.3, 16.3, 18.5, 18.1, 14.9, 10.5, 6, 3] # in °C [Source: https://en.climate-data.org/europe/germany/hamburg/hamburg-69/]
-    desired_freezer_temperature = -18 # in °C
-    coldroom_dimensions = [5, 5, 3] # in meters
-    floor_material = "Concrete"
-    wall_material = "Polyurethane foam"
-    ceiling_material = "Polyurethane foam"
-
-    # Create a cold room and climate data objects for location
-    coldRoom = Room(coldroom_dimensions, floor_material, wall_material, ceiling_material, 50, 15, 20, desired_freezer_temperature)    
-    hamburg = ClimateData(average_temperature_hamburg)
-    
-    heating_demand = hamburg.calculate_yearly_heating_demand(coldRoom)
-    print(heating_demand)
-    Plotter.plot_heating_demand(hamburg.months, heating_demand, average_temperature_hamburg)
