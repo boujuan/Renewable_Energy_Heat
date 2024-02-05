@@ -22,13 +22,13 @@ class Room:
     def _heat_power_demand(self, material, thickness, insulator_area, outside_temp):
         heat_transfer_coeff = material / thickness # U = k/L
         delta_temperature = self.desired_temp - outside_temp
-        heat_demand = heat_transfer_coeff * insulator_area * delta_temperature
+        heat_demand = heat_transfer_coeff * insulator_area * delta_temperature # Q = U * A * deltaT
         return heat_demand
 
     def total_power_demand(self, outside_temp): # outside_temp is a new external parameter
-        hpd_walls = self._heat_power_demand(self.wall_material, self.wall_thickness/100, self._walls_area(), outside_temp) # FIX THICKNESS
-        hpd_floor = self._heat_power_demand(self.floor_material, self.floor_thickness/100, self._floor_area(), outside_temp)
-        hpd_ceiling = self._heat_power_demand(self.ceiling_material, self.ceiling_thickness/100, self._floor_area(), outside_temp)
+        hpd_walls = self._heat_power_demand(self.structure["Wall"][0], self.structure["Wall"][1], self._walls_area(), outside_temp)
+        hpd_floor = self._heat_power_demand(self.structure["Floor"][0], self.structure["Floor"][1], self._floor_area(), outside_temp)
+        hpd_ceiling = self._heat_power_demand(self.structure["Ceiling"][0], self.structure["Ceiling"][1], self._floor_area(), outside_temp)
         return hpd_walls + hpd_floor + hpd_ceiling
 
 class ClimateData:
@@ -45,12 +45,11 @@ class ClimateData:
 
 class Plotter:
     @staticmethod
-    def plot_data(months, heating_demand, average_temperatures):
-        # Create figure and axis objects
+    def plot_heating_demand(months, cooling_demand, average_temperatures):
         fig, ax1 = plt.subplots()
 
         # Plot heating demand as bar chart with blue color
-        ax1.bar(months, heating_demand, color='tab:blue')
+        ax1.bar(months, cooling_demand, color='tab:blue')
         ax1.set_xlabel('Months')
         ax1.set_ylabel('Cooling Demand (kW)', color='tab:blue')
         ax1.tick_params(axis='y', labelcolor='tab:blue')
@@ -68,14 +67,17 @@ class Plotter:
         plt.show()
 
 if __name__ == "__main__":
-    average_temperature_hamburg = [1.7, 2, 4.5, 9.1, 13.3, 16.3, 18.5, 18.1, 14.9, 10.5, 6, 3] # in °C
+    average_temperature_hamburg = [1.7, 2, 4.5, 9.1, 13.3, 16.3, 18.5, 18.1, 14.9, 10.5, 6, 3] # in °C [Source: https://en.climate-data.org/europe/germany/hamburg/hamburg-69/]
+    desired_freezer_temperature = -18 # in °C
     coldroom_dimensions = [5, 5, 3] # in meters
-    desired_fridge_temperature = 8 # in °C
-    
-    # Create a room object with dimensions [x, y, z] in meters, materials for floor, wall, and ceiling, thickness in cm and desired temperature in °C
-    coldRoom = Room(coldroom_dimensions, "Concrete", "Polyurethane foam", "Polyurethane foam", 50, 15, 20, desired_fridge_temperature)    
+    floor_material = "Concrete"
+    wall_material = "Polyurethane foam"
+    ceiling_material = "Polyurethane foam"
+
+    # Create a cold room and climate data objects for location
+    coldRoom = Room(coldroom_dimensions, floor_material, wall_material, ceiling_material, 50, 15, 20, desired_freezer_temperature)    
     hamburg = ClimateData(average_temperature_hamburg)
     
     heating_demand = hamburg.calculate_yearly_heating_demand(coldRoom)
-
-    Plotter.plot_data(hamburg.months, heating_demand, average_temperature_hamburg)
+    print(heating_demand)
+    Plotter.plot_heating_demand(hamburg.months, heating_demand, average_temperature_hamburg)
