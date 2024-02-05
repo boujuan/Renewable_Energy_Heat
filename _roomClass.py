@@ -1,7 +1,4 @@
 import matplotlib.pyplot as plt
-from matplotlib import cm
-import numpy as np
-import pandas as pd
 from CoolProp.CoolProp import PropsSI
 
 class Room:
@@ -39,6 +36,7 @@ class ClimateData:
     def __init__(self, average_temperatures):
         self.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         self.average_temperatures = average_temperatures
+        self.average_yearly_temp = sum(self.average_temperatures) / len(self.average_temperatures)
 
     def calculate_yearly_heating_demand(self, room):
         heating_demand = []
