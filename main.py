@@ -13,5 +13,6 @@ if __name__ == "__main__":
     hamburg = rc.ClimateData(average_temperature_hamburg)
     
     heating_demand = hamburg.calculate_yearly_heating_demand(coldRoom)
-    print(heating_demand)
+    for month, demand in zip(hamburg.months, heating_demand):
+        print(f"Heating demand in {month}: {demand:.2f} kW")
     rc.Plotter.plot_heating_demand(hamburg.months, heating_demand, average_temperature_hamburg)

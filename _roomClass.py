@@ -68,4 +68,5 @@ class Plotter:
 
         # Set title and display the plot
         plt.title('Monthly cooling demand and average monthly temperatures in Hamburg')
+        plt.savefig('monthly_cooling_demand.png')
         plt.show()
