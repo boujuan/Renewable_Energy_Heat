@@ -38,7 +38,7 @@ class ClimateData:
         self.average_temperatures = average_temperatures # in Celsius
         self.average_yearly_temp = sum(self.average_temperatures) / len(self.average_temperatures)
 
-    def calculate_yearly_heating_demand(self, room):
+    def calculate_yearly_cooling_demand(self, room):
         heating_demand = []
         for avg_temp in self.average_temperatures:
             outside_temp = avg_temp + 273.15 # Convert to Kelvin
@@ -47,7 +47,7 @@ class ClimateData:
 
 class Plotter:
     @staticmethod
-    def plot_heating_demand(months, cooling_demand, average_temperatures):
+    def plot_cooling_demand(months, cooling_demand, average_temperatures):
         fig, ax1 = plt.subplots()
 
         # Plot heating demand as bar chart with blue color
