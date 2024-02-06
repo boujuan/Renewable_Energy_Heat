@@ -35,7 +35,7 @@ class Room:
 class ClimateData:
     def __init__(self, average_temperatures):
         self.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        self.average_temperatures = average_temperatures
+        self.average_temperatures = average_temperatures # in Celsius
         self.average_yearly_temp = sum(self.average_temperatures) / len(self.average_temperatures)
 
     def calculate_yearly_heating_demand(self, room):
