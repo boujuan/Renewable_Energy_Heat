@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 class Room:
     def __init__(self, room_dimensions, floor_material, wall_material, ceiling_material, 
@@ -70,5 +71,22 @@ class Plotter:
         # Set title and display the plot
         plt.title('Monthly cooling demand and average monthly temperatures in Hamburg')
         plt.grid()
-        plt.savefig('figures/monthly_cooling_demand.png')
+        plt.savefig('figures/monthly_cooling_demand.pdf')
         plt.show()
+    
+    @staticmethod
+    def plot_temperature_duration_curve(temperatures):
+        sorted_temperatures = sorted(temperatures, reverse=True)
+        duration = range(1, len(sorted_temperatures) + 1)
+        
+        # 3rd degree fitting polynomial
+        coefficients = np.polyfit(duration, sorted_temperatures, 3)
+        polynomial = np.poly1d(coefficients)
+        fitted_temperatures = polynomial(duration)
+        
+        plt.plot(duration, fitted_temperatures)
+        plt.xlabel('Duration (months)')
+        plt.ylabel('Temperature (°C)')
+        plt.title('Temperature Duration Curve Hamburg')
+        plt.grid(True)
+        plt.savefig('figures/temperature_duration_curve.png')
