@@ -4,7 +4,7 @@ def calculate_heating_demand(hamburg, coldRoom):
     heating_demand = hamburg.calculate_yearly_heating_demand(coldRoom)
     for month, demand in zip(hamburg.months, heating_demand):
         print(f"Heating demand in {month}: {demand:.2f} kW")
-    rc.Plotter.plot_heating_demand(hamburg.months, heating_demand, hamburg.average_temperatures)
+    rc.Plotter.plot_cooling_demand(hamburg.months, heating_demand, hamburg.average_temperatures)
     return heating_demand
 
 def calculate_cop(qout, compressor_power):
