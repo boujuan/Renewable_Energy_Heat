@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
-from CoolProp.CoolProp import PropsSI
 
 class Room:
-    def __init__(self, room_dimensions, floor_material, wall_material, ceiling_material, floor_thickness, wall_thickness, ceiling_thickness, desired_temp):
+    def __init__(self, room_dimensions, floor_material, wall_material, ceiling_material, 
+                 floor_thickness, wall_thickness, ceiling_thickness, desired_temp):
         self.room_size = room_dimensions # [length, width, height] in meters
         self.desired_temp = desired_temp + 273.15
         self.materials = {"Polyurethane foam": 0.022, # heat transfer coefficient [W/mK]
@@ -27,9 +27,12 @@ class Room:
         return heat_demand
 
     def total_power_demand(self, outside_temp): # outside_temp is a new external parameter
-        hpd_walls = self._heat_power_demand(self.structure["Wall"][0], self.structure["Wall"][1], self._walls_area(), outside_temp)
-        hpd_floor = self._heat_power_demand(self.structure["Floor"][0], self.structure["Floor"][1], self._floor_area(), outside_temp)
-        hpd_ceiling = self._heat_power_demand(self.structure["Ceiling"][0], self.structure["Ceiling"][1], self._floor_area(), outside_temp)
+        hpd_walls = self._heat_power_demand(self.structure["Wall"][0], self.structure["Wall"][1],
+                                            self._walls_area(), outside_temp)
+        hpd_floor = self._heat_power_demand(self.structure["Floor"][0], self.structure["Floor"][1],
+                                            self._floor_area(), outside_temp)
+        hpd_ceiling = self._heat_power_demand(self.structure["Ceiling"][0], self.structure["Ceiling"][1],
+                                              self._floor_area(), outside_temp)
         return hpd_walls + hpd_floor + hpd_ceiling
 
 class ClimateData:
