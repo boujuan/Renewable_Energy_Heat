@@ -4,3 +4,4 @@ env_thermal_sys.yml
 figures/*.pdf
 figures/*.png
 !figures/coldroom_render.png
+!figures/coldroom_render_labelled.png
