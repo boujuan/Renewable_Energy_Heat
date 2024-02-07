@@ -5,27 +5,27 @@ class Room:
     def __init__(self, room_dimensions, floor_material, wall_material, ceiling_material, 
                  floor_thickness, wall_thickness, ceiling_thickness, desired_temp):
         self.room_size = room_dimensions # [length, width, height] in meters
-        self.desired_temp = desired_temp + 273.15
+        self.desired_temp = desired_temp + 273.15 # Convert to Kelvin
         self.materials = {"Polyurethane foam": 0.022, # heat transfer coefficient [W/mK]
                           "Concrete": 0.11}
-        self.structure = {"Wall": [self.materials[wall_material], wall_thickness/10], # Heat transfer coefficient, Convert cm to m
-                          "Floor": [self.materials[floor_material], floor_thickness/10],
-                          "Ceiling": [self.materials[ceiling_material], ceiling_thickness/10]}
+        self.structure = {"Wall": [self.materials[wall_material], wall_thickness/100], # Heat transfer coefficient, Convert cm to m
+                          "Floor": [self.materials[floor_material], floor_thickness/100],
+                          "Ceiling": [self.materials[ceiling_material], ceiling_thickness/100]}
 
     def _walls_area(self):
-        return self.room_size[0]*self.room_size[2]*2 + self.room_size[1]*self.room_size[2]
+        return self.room_size[0]*self.room_size[2]*2 + self.room_size[1]*self.room_size[2]*2 # in m^2
 
     def _floor_area(self):
-        return self.room_size[0]*self.room_size[1]
+        return self.room_size[0]*self.room_size[1] # in m^2
 
-    def _total_surface_area(self): # Unused method
-        return self._walls_area() + self._floor_area()*2
+    def _total_surface_area(self):
+        return self._walls_area() + self._floor_area()*2 # in m^2
 
     def _heat_power_demand(self, material, thickness, insulator_area, outside_temp):
-        heat_transfer_coeff = material / thickness # U = k/L
-        delta_temperature = self.desired_temp - outside_temp
-        heat_demand = heat_transfer_coeff * insulator_area * delta_temperature # Q = U * A * deltaT
-        return heat_demand
+        heat_transfer_coeff = material / thickness # U [W/m^2K] = k[W/mK]/L[m]
+        delta_temperature = self.desired_temp - outside_temp # [K]
+        heat_demand = heat_transfer_coeff * insulator_area * delta_temperature # Q [W] = U [W/m^2K] * A [m^2] * deltaT [K]
+        return heat_demand # in Watts
 
     def total_power_demand(self, outside_temp): # outside_temp is a new external parameter
         hpd_walls = self._heat_power_demand(self.structure["Wall"][0], self.structure["Wall"][1],
@@ -34,7 +34,7 @@ class Room:
                                             self._floor_area(), outside_temp)
         hpd_ceiling = self._heat_power_demand(self.structure["Ceiling"][0], self.structure["Ceiling"][1],
                                               self._floor_area(), outside_temp)
-        return hpd_walls + hpd_floor + hpd_ceiling
+        return hpd_walls + hpd_floor + hpd_ceiling # in Watts
 
 class ClimateData:
     def __init__(self, average_temperatures):
@@ -43,11 +43,11 @@ class ClimateData:
         self.average_yearly_temp = sum(self.average_temperatures) / len(self.average_temperatures)
 
     def calculate_yearly_cooling_demand(self, room):
-        heating_demand = []
+        cooling_demand = []
         for avg_temp in self.average_temperatures:
             outside_temp = avg_temp + 273.15 # Convert to Kelvin
-            heating_demand.append(abs(room.total_power_demand(outside_temp)))
-        return heating_demand
+            cooling_demand.append(abs(room.total_power_demand(outside_temp)))
+        return cooling_demand # in Watts
 
 class Plotter:
     @staticmethod
@@ -57,7 +57,7 @@ class Plotter:
         # Plot heating demand as bar chart with blue color
         ax1.bar(months, cooling_demand, color='tab:blue')
         ax1.set_xlabel('Months')
-        ax1.set_ylabel('Cooling Demand (kW)', color='tab:blue')
+        ax1.set_ylabel('Cooling Demand (W)', color='tab:blue')
         ax1.tick_params(axis='y', labelcolor='tab:blue')
 
         # Create a twin axis for average temperature
