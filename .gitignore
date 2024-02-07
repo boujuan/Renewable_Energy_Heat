@@ -1,3 +1,4 @@
 __pycache__/*
 env_thermal_sys.yml
 .vscode/
+figures/*.pdf
