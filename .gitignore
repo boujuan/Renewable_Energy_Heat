@@ -5,3 +5,9 @@ figures/*.pdf
 figures/*.png
 !figures/coldroom_render.png
 !figures/coldroom_render_labelled.png
+figures/monthly_cooling_demand.pdf
+figures/3d_cop.pdf
+figures/ph_diagram_ammonia_propane.pdf
+figures/steady_state_cop_efficiency.pdf
+figures/temperature_duration_curve.pdf
+figures/ts_and_ph_diagrams.pdf
