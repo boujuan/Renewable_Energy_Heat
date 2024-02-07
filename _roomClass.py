@@ -6,11 +6,17 @@ class Room:
                  floor_thickness, wall_thickness, ceiling_thickness, desired_temp):
         self.room_size = room_dimensions # [length, width, height] in meters
         self.desired_temp = desired_temp + 273.15
-        self.materials = {"Polyurethane foam": 0.022, # heat transfer coefficient [W/mK]
+        self.materials = {"Polyurethane foam": 0.022,
+                          "Extruded Polystyrene lowest": 0.025,
+                          "Extruded Polystyrene highest": 0.040,
+                          "Cellular Glass lowest": 0.038,
+                          "Cellular Glass highest": 0.055,
+                          "Polyurethane lowest": 0.022,
+                          "Polyurethane highest": 0.035,
                           "Concrete": 0.11}
-        self.structure = {"Wall": [self.materials[wall_material], wall_thickness/10], # Heat transfer coefficient, Convert cm to m
-                          "Floor": [self.materials[floor_material], floor_thickness/10],
-                          "Ceiling": [self.materials[ceiling_material], ceiling_thickness/10]}
+        self.structure = {"Wall": [self.materials[wall_material], wall_thickness/100], # Heat transfer coefficient, Convert cm to m
+                          "Floor": [self.materials[floor_material], floor_thickness/100],
+                          "Ceiling": [self.materials[ceiling_material], ceiling_thickness/100]}
 
     def _walls_area(self):
         return self.room_size[0]*self.room_size[2]*2 + self.room_size[1]*self.room_size[2]
