@@ -72,7 +72,6 @@ class Plotter:
         plt.title('Monthly cooling demand and average monthly temperatures in Hamburg')
         plt.grid()
         plt.savefig('figures/monthly_cooling_demand.png', dpi=300, transparent=True)
-        plt.savefig('figures/monthly_cooling_demand.pdf')
     
     @staticmethod
     def plot_temperature_duration_curve(temperatures):
@@ -90,4 +89,3 @@ class Plotter:
         plt.title('Temperature Duration Curve Hamburg')
         plt.grid(True)
         plt.savefig('figures/temperature_duration_curve.png', dpi=300, transparent=True)
-        plt.savefig('figures/temperature_duration_curve.pdf')
