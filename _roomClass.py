@@ -68,14 +68,22 @@ class Plotter:
 
         # Create a twin axis for average temperature
         ax2 = ax1.twinx()
+        
+        # Calculate the average yearly temperature
+        avg_yearly_temp = np.mean(average_temperatures)
+        print(f'Average yearly temperature: {avg_yearly_temp:.2f}°C')
 
         # Plot average temperature as line graph with red color
         ax2.plot(months, average_temperatures, marker='o', color='tab:red')
-        ax2.set_ylabel('Average Temperature (°C)', color='tab:red')
+        # Plot the average yearly temperature as a line graph
+        ax2.axhline(avg_yearly_temp, color='black', linestyle='--', label='Average yearly temperature')
+        
+        ax2.set_ylabel('Avg. Temperature (°C)', color='tab:red')
         ax2.tick_params(axis='y', labelcolor='tab:red')
 
         # Set title and display the plot
         plt.title('Monthly cooling demand and average monthly temperatures in Hamburg')
+        plt.legend()
         plt.grid()
         plt.savefig('figures/monthly_cooling_demand.png', dpi=300, transparent=True)
     
